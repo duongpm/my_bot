@@ -38,20 +38,34 @@ class ObjectAvoidanceNode(Node):
             lidarXY = np.append(lidarXY, [[x,y]],axis=0)
 
         # define the model
-        model = DBSCAN(eps=0.30, min_samples=9)
+        model = DBSCAN(eps=0.50, min_samples=3)
+
+        db = model.fit(lidarXY)
+
+        #Store the labels
+        labels = db.labels_
+
+        ls, cs = np.unique(labels,return_counts=True)
+        dic = dict(zip(ls,cs))
+        idx = [i for i,label in enumerate(labels) if dic[label] <10 and label >= 0]
+      #  pyplot.scatter(lidarXY[row_ix, 0], lidarXY[row_ix, 1])
+        pyplot.scatter(lidarXY[idx, 0], lidarXY[idx, 1], c=db.labels_[idx], cmap='rainbow')
+        # show the plot
+        pyplot.show()
+'''
         # fit model and predict clusters
         yhat = model.fit_predict(lidarXY)
         # retrieve unique clusters
         clusters = unique(yhat)
         # create scatter plot for samples from each cluster
-        for cluster in clusters:
+        for i, cluster in enumerate(clusters):
             # get row indexes for samples with this cluster
             row_ix = where(yhat == cluster)
+          #  print(len(row_ix[0]))
             # create scatter of these samples
             pyplot.scatter(lidarXY[row_ix, 0], lidarXY[row_ix, 1])
-        # show the plot
-        pyplot.show()
-
+'''       
+'''
         min_distance = min(ranges)
         print(min_distance)
        # print("haha")
@@ -68,7 +82,7 @@ class ObjectAvoidanceNode(Node):
             twist_msg.angular.z = 0.0
 
         self.publisher.publish(twist_msg)
-
+'''
 def main(args=None):
     rclpy.init(args=args)
     node = ObjectAvoidanceNode()
