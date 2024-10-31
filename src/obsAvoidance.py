@@ -21,7 +21,6 @@ class ObjectAvoidanceNode(Node):
         ranges = msg.ranges
         min_distance = min(ranges)
         print(min_distance)
-       # print("haha")
 
         twist_msg = Twist()
 
