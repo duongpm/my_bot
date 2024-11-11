@@ -151,7 +151,7 @@ class LocalizationNode(Node):
                 self.get_logger().info(f"Cluster {label}: Rejected due to radius {radius:.2f} outside range.")
 
         # Sort centers by radius in descending order
-        centers.sort(key=lambda center:center[3], reverse=True)
+        centers.sort(key=lambda center:center[2], reverse=True)
 
         # Ensure we have exactly two circles to perform trilateration
         if len(centers) >= 2:
